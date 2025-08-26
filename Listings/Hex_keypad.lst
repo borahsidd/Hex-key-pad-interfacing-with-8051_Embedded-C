@@ -1,0 +1,106 @@
+C51 COMPILER V9.56.0.0   HEX_KEYPAD                                                        03/24/2022 10:20:47 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE HEX_KEYPAD
+OBJECT MODULE PLACED IN .\Objects\Hex_keypad.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Hex_keypad.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -s\Hex_keypad.lst) TABS(2) OBJECT(.\Objects\Hex_keypad.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include "4bit_LCD.h"
+   3          
+   4          sbit R1 = P2^0;     // Connecting keypad to Port 2
+   5          sbit R2 = P2^1;
+   6          sbit R3 = P2^2;
+   7          sbit R4 = P2^3;
+   8          sbit C1 = P2^4;
+   9          sbit C2 = P2^5;
+  10          sbit C3 = P2^6;
+  11          sbit C4 = P2^7;
+  12          
+  13          
+  14          ///////////////////////////////////// Function to initialize serial communication
+  15          void initialize_serial()  
+  16            { 
+  17   1        TMOD=0x20;  //use Timer 1, 8 bit ,auto reload
+  18   1        TH1=0xFD;   //9600 baudrate
+  19   1        SCON=0x50;
+  20   1        TR1=1;     //start timer
+  21   1        TI=1;
+  22   1        }
+  23          ////////////////////////////////////Function to transmit data_
+  24          void transmit(unsigned char cmd)
+  25            {
+  26   1         while(TI==0);
+  27   1         SBUF=cmd;
+  28   1         TI=0;
+  29   1        }
+  30          ///////////////////////////////////Main function
+  31          void main()
+  32          {
+  33   1        lcdinit();
+  34   1        initialize_serial();
+  35   1        C1=1; C2=1; C3=1; C4=1;
+  36   1        while(1)
+  37   1        {
+  38   2          /////////////////////////////////////For fist row
+  39   2          R1=0; R2=1; R3=1; R4=1;
+  40   2          if(C1==0)
+  41   2          {transmit('1');lcd_data('1'); delay(100);}
+  42   2          else if(C2==0)
+  43   2          {transmit('2');lcd_data('2');delay(100);}
+  44   2          else if(C3==0)
+  45   2          {transmit('3');lcd_data('3'); delay(100);}
+  46   2          else if(C4==0)
+  47   2          {transmit('A'); lcd_data('A');delay(100);}
+  48   2          /////////////////////////////////////For second row
+  49   2          R1=1; R2=0; R3=1; R4=1;
+  50   2          if(C1==0)
+  51   2          {transmit('4');lcd_data('4'); delay(100);}
+  52   2          else if(C2==0)
+  53   2          {transmit('5');lcd_data('5'); delay(100);}
+  54   2          else if(C3==0)
+C51 COMPILER V9.56.0.0   HEX_KEYPAD                                                        03/24/2022 10:20:47 PAGE 2   
+
+  55   2          {transmit('6');lcd_data('6'); delay(100);}
+  56   2          else if(C4==0)
+  57   2          {transmit('B');lcd_data('B'); delay(100);}
+  58   2          /////////////////////////////////////For 3rd row
+  59   2          R1=1; R2=1; R3=0; R4=1;
+  60   2          if(C1==0)
+  61   2          {transmit('7'); lcd_data('7');delay(100);}
+  62   2          else if(C2==0)
+  63   2          {transmit('8');lcd_data('8'); delay(100);}
+  64   2          else if(C3==0)
+  65   2          {transmit('9');lcd_data('9'); delay(100);}
+  66   2          else if(C4==0)
+  67   2          {transmit('C');lcd_data('C'); delay(100);}
+  68   2          ///////////////////////////////////// For 4th row
+  69   2          R1=1; R2=1; R3=1; R4=0;
+  70   2          if(C1==0)
+  71   2          {transmit('*'); lcd_data('*');delay(100);}
+  72   2          else if(C2==0)
+  73   2          {transmit('0'); lcd_data('0');delay(100);}
+  74   2          else if(C3==0)
+  75   2          {transmit('#');lcd_data('#'); delay(100);}
+  76   2          else if(C4==0)
+  77   2          {transmit('D');lcd_data('D'); delay(100);}
+  78   2          
+  79   2        }
+  80   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    350    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
